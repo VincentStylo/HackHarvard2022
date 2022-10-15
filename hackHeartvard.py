@@ -22,6 +22,7 @@ class HackHeartvard:
         pygame.display.set_caption("Hack Heartvard")
 
         self.player = Player(self)
+        self.bullets = pygame.sprite.Group()
 
     def run_game(self):
         while True:
@@ -31,6 +32,7 @@ class HackHeartvard:
             self._check_events()
             self._update_background()
             self.player.update()
+            self._update_bullets()
             self._update_screen()
 
     def _check_events(self):
@@ -74,6 +76,11 @@ class HackHeartvard:
         if len(self.bullets) < self.settings.bullets_allowed:
             new_bullet = Bullet(self)
             self.bullets.add(new_bullet)
+
+    def _update_bullets(self):
+        """Update position of bullets and get rid of old bullets."""
+        # Update bullet positions.
+        self.bullets.update()
 
 
     
