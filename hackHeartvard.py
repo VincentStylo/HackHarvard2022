@@ -99,7 +99,7 @@ class HackHeartvard:
         self.bullets.update()
         # Get rid of bullets that have disappeared.
         for bullet in self.bullets.copy():
-            if bullet.rect.bottom <= 0:
+            if bullet.rect.right >= 900:
                  self.bullets.remove(bullet)
 
 if __name__ == '__main__':
