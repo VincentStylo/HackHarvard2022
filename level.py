@@ -1,6 +1,8 @@
 import pygame
 from screen import *
 from player import *
+from movement import *
+from time import sleep
 
 
 def level():
@@ -8,17 +10,13 @@ def level():
     image = pygame.transform.scale(image, (800, 600))
     screen = pygame.display.set_mode((800, 600))
     image2 = loadPlayer()
+    x = 0
+    y = 0
     while True:
         screen.blit(image, (0, 0))
-        displayPlayer(screen, image2)
+        x = Move(x)
+        y = Jump(y)
+        displayPlayer(screen, image2, x, y)
         pygame.display.update()
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                pygame.quit()
-                quit()
-            if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_ESCAPE:
-                    pygame.quit()
-                    quit()
-                if event.key == pygame.K_SPACE:
-                    print("Space")
+        y = 0
+        pygame.display.update()

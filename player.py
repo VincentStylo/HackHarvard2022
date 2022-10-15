@@ -1,4 +1,5 @@
 import pygame
+from time import sleep
 
 
 def loadPlayer():
@@ -7,6 +8,6 @@ def loadPlayer():
     return image
 
 
-def displayPlayer(screen, image):
-    screen.blit(image, (50, 400))
+def displayPlayer(screen, image, x, y):
+    screen.blit(image, (50 + x, 400 + y))
     pygame.display.update()
