@@ -50,6 +50,8 @@ class HackHeartvard:
             self.player.moving_left = True
         elif event.key == pygame.K_q:
             sys.exit()
+        elif event.key == pygame.K_SPACE:
+            self._fire_bullet()
 
     def _check_keyup_events(self, event):
         """Respond to key releases."""
@@ -61,10 +63,18 @@ class HackHeartvard:
     def _update_screen(self):
         pygame.display.update()
         self.player.blitme()
+        for bullet in self.bullets.sprites():
+            bullet.draw_bullet()
 
     def _update_background(self):
         image = pygame.image.load("images/menu.png")
         image = pygame.transform.scale(image, (800, 600))
+
+    def _fire_bullet(self):
+        if len(self.bullets) < self.settings.bullets_allowed:
+            new_bullet = Bullet(self)
+            self.bullets.add(new_bullet)
+
 
     
 
