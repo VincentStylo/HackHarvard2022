@@ -3,6 +3,7 @@ import sys
 from time import sleep
 from player import Player
 from obstacle import *
+from enemy import *
 
 import pygame
 
@@ -28,6 +29,9 @@ class HackHeartvard:
 
         self.obstacle = Obstacle(self)
         self.obstacle2 = Obstacle2(self)
+
+        self.enemy1 = Enemy1(self)
+        self.enemy2 = Enemy2(self)
 
     def run_game(self):
         self.image = pygame.image.load(self.img)
@@ -76,6 +80,8 @@ class HackHeartvard:
         self.player.blitme()
         self.obstacle.blitme()
         self.obstacle2.blitme()
+        self.enemy1.blitme()
+        self.enemy2.blitme()
         pygame.display.flip()
         for bullet in self.bullets.sprites():
             bullet.draw_bullet()
@@ -99,7 +105,7 @@ class HackHeartvard:
         # Get rid of bullets that have disappeared.
         for bullet in self.bullets.copy():
             if bullet.rect.right >= 900:
-                 self.bullets.remove(bullet)
+                self.bullets.remove(bullet)
 
 
 if __name__ == '__main__':
