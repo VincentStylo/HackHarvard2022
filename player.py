@@ -14,6 +14,7 @@ class Player(Sprite):
 
         # Load the player image and gets its rect.
         self.image = pygame.image.load("images/player.png")
+        self.image = pygame.transform.scale(self.image, (100, 100))
         self.rect = self.image.get_rect()
 
         # Start each new ship at the bottom center of the screen.
@@ -30,9 +31,9 @@ class Player(Sprite):
         """Update the ship's position based on movement flags."""
         # Update the playrs x value, not the rect.
         if self.moving_right and self.rect.right < self.screen_rect.right:
-            self.x += 10
+            self.x += 1
         if self.moving_left and self.rect.left > 0:
-            self.x -= 10
+            self.x -= 1
 
         # Update rect object from self.x.
         self.rect.x = self.x
