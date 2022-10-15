@@ -2,7 +2,7 @@ import pygame
 from time import sleep
 
 from pygame.sprite import Sprite
-from obstacle import Obstacle
+from obstacle import *
 
 
 class Player(Sprite):
@@ -18,10 +18,10 @@ class Player(Sprite):
         self.image = pygame.transform.scale(self.image, (75, 75))
         self.rect = self.image.get_rect()
 
-        # Start each new ship at the bottom center of the screen.
+        # Start each new player at the bottom center of the screen.
         self.rect.bottomleft = self.screen_rect.bottomleft
 
-        # Store a decimal value for the ship's horizontal position.
+        # Store a decimal value for the player's horizontal position.
         self.x = float(self.rect.x)
         self.y = float(self.rect.y)
 
@@ -31,8 +31,6 @@ class Player(Sprite):
         self.jump = False
 
     def update(self):
-        """Update the ship's position based on movement flags."""
-        # Update the playrs x value, not the rect.
         if self.moving_right and self.rect.right < self.screen_rect.right:
             if self.collision():
                 self.x -= 5.5
@@ -62,13 +60,7 @@ class Player(Sprite):
         self.rect.y = self.y
 
     def blitme(self):
-        """Draw the ship at its current location."""
         self.screen.blit(self.image, self.rect)
 
-    def center_ship(self):
-        """Center the ship on the screen."""
-        self.rect.midbottom = self.screen_rect.midbottom
-        self.x = float(self.rect.x)
-
     def collision(self):
-        return self.rect.colliderect(Obstacle(self).collisionBox())
+        return self.rect.colliderect(Obstacle(self).collisionBox()) or self.rect.colliderect(Obstacle2(self).collisionBox())
