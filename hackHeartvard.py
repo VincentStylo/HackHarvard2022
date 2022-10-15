@@ -1,6 +1,8 @@
+from re import S
 import sys
 from time import sleep
 from player import Player
+from obstacle import Obstacle
 
 import pygame
 
@@ -23,6 +25,9 @@ class HackHeartvard:
         pygame.display.set_caption("Hack Heartvard")
 
         self.player = Player(self)
+        self.obstacle = Obstacle(self)
+        self.obstacle2 = Obstacle(self)
+        self.obstacle3 = Obstacle(self)
 
     def run_game(self):
         print(self.lvCount)
@@ -34,6 +39,7 @@ class HackHeartvard:
             self._update_screen()
             self._update_background()
             self.player.update()
+            self.player.collision()
             if (self.player.x > 697):
                 self.lvCount += 1
                 self.image = self._update_background()
@@ -69,6 +75,9 @@ class HackHeartvard:
 
     def _update_screen(self):
         self.player.blitme()
+        self.obstacle.blitme()
+        self.obstacle3.blitme()
+        self.obstacle2.blitme()
         pygame.display.flip()
 
     def _update_background(self):

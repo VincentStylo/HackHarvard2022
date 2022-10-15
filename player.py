@@ -2,6 +2,7 @@ import pygame
 from time import sleep
 
 from pygame.sprite import Sprite
+from obstacle import Obstacle
 
 
 class Player(Sprite):
@@ -33,16 +34,28 @@ class Player(Sprite):
         """Update the ship's position based on movement flags."""
         # Update the playrs x value, not the rect.
         if self.moving_right and self.rect.right < self.screen_rect.right:
-            self.x += 5.5
+            if self.collision():
+                self.x -= 5.5
+            else:
+                self.x += 5.5
         if self.moving_left and self.rect.left > 0:
-            self.x -= 5.5
+            if self.collision():
+                self.x += 5.5
+            else:
+                self.x -= 5.5
         if self.x > self.screen_rect.right - 100:
             self.x = 0
         if self.jump and self.y > 0:
-            self.y -= 10
+            if self.collision():
+                self.y += 10
+            else:
+                self.y -= 10
         elif not self.jump and self.y < self.screen_rect.bottom - 75:
-            self.jump = False
-            self.y += 10
+            if (self.collision()):
+                self.y = Obstacle(self).collisionBox().top - 75
+            else:
+                self.jump = False
+                self.y += 10
 
         # Update rect object from self.x.
         self.rect.x = self.x
@@ -56,3 +69,6 @@ class Player(Sprite):
         """Center the ship on the screen."""
         self.rect.midbottom = self.screen_rect.midbottom
         self.x = float(self.rect.x)
+
+    def collision(self):
+        return self.rect.colliderect(Obstacle(self).collisionBox())
