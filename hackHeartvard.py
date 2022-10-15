@@ -23,6 +23,9 @@ class HackHeartvard:
         pygame.display.set_caption("Hack Heartvard")
 
         self.player = Player(self)
+        self.bullets = pygame.sprite.Group()
+
+
 
     def run_game(self):
         print(self.lvCount)
@@ -51,11 +54,13 @@ class HackHeartvard:
         """Respond to keypresses."""
         if event.key == pygame.K_d:
             self.player.moving_right = True
-        if event.key == pygame.K_a:
+        elif event.key == pygame.K_a:
             self.player.moving_left = True
-        if event.key == pygame.K_w:
+        elif event.key == pygame.K_w:
             self.player.jump = True
-        if event.key == pygame.K_q:
+        elif event.key == pygame.K_SPACE:
+            self._fire_bullet()
+        elif event.key == pygame.K_q:
             sys.exit()
 
     def _check_keyup_events(self, event):
@@ -70,6 +75,9 @@ class HackHeartvard:
     def _update_screen(self):
         self.player.blitme()
         pygame.display.flip()
+        for bullet in self.bullets.sprites():
+            bullet.draw_bullet()
+        
 
     def _update_background(self):
         image = pygame.image.load(self.img)
@@ -77,6 +85,21 @@ class HackHeartvard:
         pygame.display.flip()
         return image
 
+    def _fire_bullet(self):
+        """Create a new bullet and add it to the bullets group."""
+        if len(self.bullets) < self.settings.bullets_allowed:
+            new_bullet = Bullet(self)
+            self.bullets.add(new_bullet)
+
+
+    def _update_bullets(self):
+        """Update position of bullets and get rid of old bullets."""
+        # Update bullet positions.
+        self.bullets.update()
+        # Get rid of bullets that have disappeared.
+        for bullet in self.bullets.copy():
+            if bullet.rect.bottom <= 0:
+                 self.bullets.remove(bullet)
 
 if __name__ == '__main__':
     # Creates the game, and runs it
