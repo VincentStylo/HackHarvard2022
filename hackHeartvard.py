@@ -40,6 +40,7 @@ class HackHeartvard:
             if (self.player.x > 697):
                 self.lvCount += 1
                 self.image = self._update_background()
+            self._update_bullets()
 
     def _check_events(self):
         for event in pygame.event.get():
