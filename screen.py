@@ -1,6 +1,8 @@
 import pygame
 from level import *
 
+pygame.init()
+
 
 def Menu():
     screen = pygame.display.set_mode((800, 600))
