@@ -1,6 +1,8 @@
+from re import S
 import sys
 from time import sleep
 from player import Player
+from obstacle import *
 
 import pygame
 
@@ -15,8 +17,7 @@ class HackHeartvard:
         self.screen = pygame.display.set_mode((800, 600))
         self.settings.screen_width = self.screen.get_rect().width
         self.settings.screen_height = self.screen.get_rect().height
-        self.lvCount = 1
-        self.img = "images/bg" + str(self.lvCount) + ".png"
+        self.img = "images/bg1.png"
         image = pygame.image.load("images/menu.png")
         image = pygame.transform.scale(image, (800, 600))
         self.screen.blit(image, (0, 0))
@@ -25,10 +26,10 @@ class HackHeartvard:
         self.player = Player(self)
         self.bullets = pygame.sprite.Group()
 
-
+        self.obstacle = Obstacle(self)
+        self.obstacle2 = Obstacle2(self)
 
     def run_game(self):
-        print(self.lvCount)
         self.image = pygame.image.load(self.img)
         self.image = pygame.transform.scale(self.image, (800, 600))
         while True:
@@ -37,10 +38,8 @@ class HackHeartvard:
             self._update_screen()
             self._update_background()
             self.player.update()
-            if (self.player.x > 697):
-                self.lvCount += 1
-                self.image = self._update_background()
             self._update_bullets()
+            self.player.collision()
 
     def _check_events(self):
         for event in pygame.event.get():
@@ -75,10 +74,11 @@ class HackHeartvard:
 
     def _update_screen(self):
         self.player.blitme()
+        self.obstacle.blitme()
+        self.obstacle2.blitme()
         pygame.display.flip()
         for bullet in self.bullets.sprites():
             bullet.draw_bullet()
-        
 
     def _update_background(self):
         image = pygame.image.load(self.img)
@@ -92,7 +92,6 @@ class HackHeartvard:
             new_bullet = Bullet(self)
             self.bullets.add(new_bullet)
 
-
     def _update_bullets(self):
         """Update position of bullets and get rid of old bullets."""
         # Update bullet positions.
@@ -101,6 +100,7 @@ class HackHeartvard:
         for bullet in self.bullets.copy():
             if bullet.rect.right >= 900:
                  self.bullets.remove(bullet)
+
 
 if __name__ == '__main__':
     # Creates the game, and runs it
