@@ -15,6 +15,8 @@ class HackHeartvard:
         self.screen = pygame.display.set_mode((800, 600))
         self.settings.screen_width = self.screen.get_rect().width
         self.settings.screen_height = self.screen.get_rect().height
+        self.lvCount = 1
+        self.img = "images/bg" + str(self.lvCount) + ".png"
         image = pygame.image.load("images/menu.png")
         image = pygame.transform.scale(image, (800, 600))
         self.screen.blit(image, (0, 0))
@@ -23,14 +25,18 @@ class HackHeartvard:
         self.player = Player(self)
 
     def run_game(self):
-        image = pygame.image.load("images/menu.png")
-        image = pygame.transform.scale(image, (800, 600))
+        print(self.lvCount)
+        self.image = pygame.image.load(self.img)
+        self.image = pygame.transform.scale(self.image, (800, 600))
         while True:
-            # self.screen.blit(image, (0, 0)) # This line is causing the error
+            self.screen.blit(self.image, (0, 0))
             self._check_events()
-            self.player.update()
             self._update_screen()
             self._update_background()
+            self.player.update()
+            if (self.player.x > 697):
+                self.lvCount += 1
+                self.image = self._update_background()
 
     def _check_events(self):
         for event in pygame.event.get():
@@ -47,23 +53,29 @@ class HackHeartvard:
             self.player.moving_right = True
         if event.key == pygame.K_a:
             self.player.moving_left = True
+        if event.key == pygame.K_w:
+            self.player.jump = True
         if event.key == pygame.K_q:
             sys.exit()
 
     def _check_keyup_events(self, event):
         """Respond to key releases."""
-        if event.key == pygame.K_RIGHT:
+        if event.key == pygame.K_d:
             self.player.moving_right = False
-        if event.key == pygame.K_LEFT:
+        if event.key == pygame.K_a:
             self.player.moving_left = False
+        if event.key == pygame.K_w:
+            self.player.jump = False
 
     def _update_screen(self):
         self.player.blitme()
-        pygame.display.update()
+        pygame.display.flip()
 
     def _update_background(self):
-        image = pygame.image.load("images/test.png")
+        image = pygame.image.load(self.img)
         image = pygame.transform.scale(image, (800, 600))
+        pygame.display.flip()
+        return image
 
 
 if __name__ == '__main__':
