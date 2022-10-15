@@ -19,4 +19,4 @@ def Menu():
                     pygame.quit()
                     quit()
                 if event.key == pygame.K_SPACE:
-                    level()
+                    Level()

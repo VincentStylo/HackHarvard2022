@@ -5,7 +5,7 @@ from movement import *
 from time import sleep
 
 
-def level():
+def Level():
     image = pygame.image.load("images/menu.png")
     image = pygame.transform.scale(image, (800, 600))
     screen = pygame.display.set_mode((800, 600))
@@ -20,3 +20,4 @@ def level():
         pygame.display.update()
         y = 0
         pygame.display.update()
+    return
