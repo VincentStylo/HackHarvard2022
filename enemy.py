@@ -6,7 +6,6 @@ from pygame import mixer
 
 class Enemy1(Sprite):
     def __init__(self, ai_game):
-        """Initialize the ship and set its starting position."""
         super().__init__()
         self.screen = ai_game.screen
         self.settings = ai_game.settings
@@ -31,7 +30,6 @@ class Enemy1(Sprite):
 
 class Enemy2(Sprite):
     def __init__(self, ai_game):
-        """Initialize the ship and set its starting position."""
         super().__init__()
         self.screen = ai_game.screen
         self.settings = ai_game.settings
@@ -53,7 +51,7 @@ class Enemy2(Sprite):
 
 class Boss(Sprite):
     def __init__(self, ai_game):
-        """Initialize the ship and set its starting position."""
+        
         super().__init__()
         self.screen = ai_game.screen
         self.settings = ai_game.settings

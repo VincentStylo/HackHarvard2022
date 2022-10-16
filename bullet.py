@@ -4,10 +4,10 @@ from enemy import *
 
 
 class Bullet(Sprite):
-    """A class to manage bullets fired from the ship"""
+    """A class to manage bullets fired from player"""
 
     def __init__(self, ai_game):
-        """Create a bullet object at the ship's current position."""
+        """Create a bullet object at the player's current position."""
         super().__init__()
         self.screen = ai_game.screen
         self.settings = ai_game.settings
@@ -51,10 +51,10 @@ class Bullet(Sprite):
 
 
 class Enemy1Bullet(Sprite):
-    """A class to manage bullets fired from the ship"""
+    """A class to manage bullets fired from the player"""
 
     def __init__(self, ai_game):
-        """Create a bullet object at the ship's current position."""
+        """Create a bullet object at the player's current position."""
         super().__init__()
         self.screen = ai_game.screen
         self.settings = ai_game.settings
@@ -78,20 +78,17 @@ class Enemy1Bullet(Sprite):
         self.rect.x = 100
         newDirection = self.bullet_Direction(self.direction)
         if newDirection == True:
-            """Move the bullet up the screen."""
             # Update the decimal position of the bullet.
             self.x -= self.settings.bullet_speed
             # Update the rect position.
             self.rect.x = self.x
         else:
-            """Move the bullet up the screen."""
             # Update the decimal position of the bullet.
             self.x += self.settings.bullet_speed
             # Update the rect position.
             self.rect.x = self.x
 
     def draw_bullet(self):
-        """Draw the bullet to the screen."""
         self.screen.blit(self.img, self.rect)
 
     def bullet_Direction(self, newDirection):
@@ -102,10 +99,8 @@ class Enemy1Bullet(Sprite):
 
 
 class Enemy2Bullet(Sprite):
-    """A class to manage bullets fired from the ship"""
 
     def __init__(self, ai_game):
-        """Create a bullet object at the ship's current position."""
         super().__init__()
         self.screen = ai_game.screen
         self.settings = ai_game.settings
@@ -129,20 +124,17 @@ class Enemy2Bullet(Sprite):
         self.rect.x = 100
         newDirection = self.bullet_Direction(self.direction)
         if newDirection == True:
-            """Move the bullet up the screen."""
             # Update the decimal position of the bullet.
             self.x -= self.settings.bullet_speed
             # Update the rect position.
             self.rect.x = self.x
         else:
-            """Move the bullet up the screen."""
             # Update the decimal position of the bullet.
             self.x += self.settings.bullet_speed
             # Update the rect position.
             self.rect.x = self.x
 
     def draw_bullet(self):
-        """Draw the bullet to the screen."""
         self.screen.blit(self.img, self.rect)
 
     def bullet_Direction(self, newDirection):
@@ -153,10 +145,9 @@ class Enemy2Bullet(Sprite):
 
 
 class BossBullet(Sprite):
-    """A class to manage bullets fired from the ship"""
 
     def __init__(self, ai_game):
-        """Create a bullet object at the ship's current position."""
+    
         super().__init__()
         self.screen = ai_game.screen
         self.settings = ai_game.settings
@@ -180,20 +171,18 @@ class BossBullet(Sprite):
         self.rect.x = 100
         newDirection = self.bullet_Direction(self.direction)
         if newDirection == True:
-            """Move the bullet up the screen."""
+            
             # Update the decimal position of the bullet.
             self.x -= self.settings.bullet_speed
             # Update the rect position.
             self.rect.x = self.x
         else:
-            """Move the bullet up the screen."""
             # Update the decimal position of the bullet.
             self.x += self.settings.bullet_speed
             # Update the rect position.
             self.rect.x = self.x
 
     def draw_bullet(self):
-        """Draw the bullet to the screen."""
         self.screen.blit(self.img, self.rect)
 
     def bullet_Direction(self, newDirection):

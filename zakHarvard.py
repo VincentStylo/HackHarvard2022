@@ -84,7 +84,6 @@ class zakHarvard:
                 self._check_play_button(mouse_pos)
 
     def _check_keydown_events(self, event):
-        """Respond to keypresses."""
         if event.key == pygame.K_d:
             self.player.moving_right = True
             self.right_Direction = True
@@ -99,7 +98,6 @@ class zakHarvard:
             sys.exit()
 
     def _check_keyup_events(self, event):
-        """Respond to key releases."""
         if event.key == pygame.K_d:
             self.player.moving_right = False
         if event.key == pygame.K_a:
@@ -138,14 +136,12 @@ class zakHarvard:
         return image
 
     def _fire_bullet(self):
-        """Create a new bullet and add it to the bullets group."""
         if len(self.bullets) < self.settings.bullets_allowed:
             new_bullet = Bullet(self)
             new_bullet.bullet_Direction(self.right_Direction)
             self.bullets.add(new_bullet)
 
     def _update_bullets(self):
-        """Update position of bullets and get rid of old bullets."""
         # Update bullet positions.
         self.bullets.update()
         # Get rid of bullets that have disappeared.
@@ -166,7 +162,6 @@ class zakHarvard:
                 self.bullets.remove(bullet)
 
     def _fire_Ebullet(self):
-        """Create a new bullet and add it to the bullets group."""
         if len(self.bullets) < self.settings.bullets_allowed:
             if (self.enemy1.lives > 0):
                 new_bullet = Enemy1Bullet(self)
@@ -183,7 +178,6 @@ class zakHarvard:
                 self.bullets.add(new_bullet3)
 
     def _update_Ebullets(self):
-        """Update position of bullets and get rid of old bullets."""
         # Update bullet positions.
         self.bullets.update()
 
