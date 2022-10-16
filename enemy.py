@@ -18,7 +18,7 @@ class Enemy1(Sprite):
         self.rect = self.image.get_rect()
 
         self.rect.midright = self.screen_rect.midright
-        self.rect.y -= 75
+        self.rect.y -= 175
 
     def blitme(self):
         self.screen.blit(self.image, self.rect)
@@ -42,7 +42,31 @@ class Enemy2(Sprite):
         self.rect = self.image.get_rect()
 
         self.rect.bottomright = self.screen_rect.bottomright
+        self.rect.y -= 175
+
+    def blitme(self):
+        self.screen.blit(self.image, self.rect)
+
+    def collision(self):
+        return self.rect.colliderect(Bullet(self).collisionBox())
+
+
+class Boss(Sprite):
+    def __init__(self, ai_game):
+        """Initialize the ship and set its starting position."""
+        super().__init__()
+        self.screen = ai_game.screen
+        self.settings = ai_game.settings
+        self.screen_rect = ai_game.screen.get_rect()
+
+        # Load the player image and gets its rect.
+        self.image = pygame.image.load("images/the-organizer.png")
+        self.image = pygame.transform.scale(self.image, (250, 250))
+        self.rect = self.image.get_rect()
+
+        self.rect.bottomright = self.screen_rect.bottomright
         self.rect.y -= 75
+        self.rect.x += 75
 
     def blitme(self):
         self.screen.blit(self.image, self.rect)

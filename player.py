@@ -19,7 +19,7 @@ class Player(Sprite):
         self.rect = self.image.get_rect()
 
         # Start each new player at the bottom center of the screen.
-        self.rect.bottomleft = self.screen_rect.bottomleft
+        self.rect.midleft = self.screen_rect.midleft
 
         # Store a decimal value for the player's horizontal position.
         self.x = float(self.rect.x)
@@ -48,7 +48,7 @@ class Player(Sprite):
                 self.y += 10
             else:
                 self.y -= 10
-        elif not self.jump and self.y < self.screen_rect.bottom - 75:
+        elif not self.jump and self.y < self.screen_rect.bottom - 200:
             if (self.collision()):
                 self.y = Obstacle(self).collisionBox().top - 75
             else:
