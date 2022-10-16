@@ -1,14 +1,17 @@
 from re import S
 import sys
 from time import sleep
+from turtle import left
 from player import Player
 from obstacle import *
 from enemy import *
 
 import pygame
 
-from bullet import Bullet
+from bullet import *
 from settings import Settings
+
+right_direction = True;
 
 
 class HackHeartvard:
@@ -58,8 +61,10 @@ class HackHeartvard:
         """Respond to keypresses."""
         if event.key == pygame.K_d:
             self.player.moving_right = True
+            self.right_Direction = True
         elif event.key == pygame.K_a:
             self.player.moving_left = True
+            self.right_Direction = False
         elif event.key == pygame.K_w:
             self.player.jump = True
         elif event.key == pygame.K_SPACE:
@@ -96,6 +101,7 @@ class HackHeartvard:
         """Create a new bullet and add it to the bullets group."""
         if len(self.bullets) < self.settings.bullets_allowed:
             new_bullet = Bullet(self)
+            new_bullet.bullet_Direction(right_direction)
             self.bullets.add(new_bullet)
 
     def _update_bullets(self):
