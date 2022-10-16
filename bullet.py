@@ -1,6 +1,6 @@
 import pygame
 from pygame.sprite import Sprite
-from enemy import Enemy1, Enemy2
+from enemy import *
 
 
 class Bullet(Sprite):

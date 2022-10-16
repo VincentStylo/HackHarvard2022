@@ -1,5 +1,7 @@
 import pygame
 from pygame.sprite import Sprite
+from pygame.locals import *
+from pygame import mixer
 
 
 class Enemy1(Sprite):
@@ -9,7 +11,7 @@ class Enemy1(Sprite):
         self.screen = ai_game.screen
         self.settings = ai_game.settings
         self.screen_rect = ai_game.screen.get_rect()
-        self.lives = 0
+        self.lives = 3
 
         # Load the player image and gets its rect.
         self.image = pygame.image.load("images/enemy1.png")
@@ -34,7 +36,7 @@ class Enemy2(Sprite):
         self.screen = ai_game.screen
         self.settings = ai_game.settings
         self.screen_rect = ai_game.screen.get_rect()
-        self.lives = 0
+        self.lives = 3
 
         # Load the player image and gets its rect.
         self.image = pygame.image.load("images/enemy2.png")
@@ -60,13 +62,12 @@ class Boss(Sprite):
 
         # Load the player image and gets its rect.
         self.image = pygame.image.load("images/the-organizer.png")
-        self.image = pygame.transform.scale(self.image, (75, 75))
-        self.image = pygame.transform.flip(self.image, True, False)
+        self.image = pygame.transform.scale(self.image, (250, 250))
         self.rect = self.image.get_rect()
 
         self.rect.bottomright = self.screen_rect.bottomright
-        self.rect.y += 75
-        self.rect.x -= 75
+        self.rect.y -= 100
+        self.rect.x += 75
 
     def blitme(self):
         self.screen.blit(self.image, self.rect)

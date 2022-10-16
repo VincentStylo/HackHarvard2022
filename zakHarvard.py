@@ -17,7 +17,13 @@ from settings import Settings
 class zakHarvard:
     def __init__(self):
         pygame.init()
-        #self.intro = Intro(self)
+        mixer.init()
+        mixer.music.load('music/Ultra.wav')
+        mixer.music.play(-1)
+        self.intro = Intro(self)
+        mixer.music.load('music/AllStar.wav')
+        mixer.music.play(-1)
+
         self.settings = Settings()
         self.screen = pygame.display.set_mode((800, 600))
         self.settings.screen_width = self.screen.get_rect().width
@@ -43,8 +49,8 @@ class zakHarvard:
 
         self.gameStatus = False
         self.bossStatus = False
-        if (self.bossStatus):
-            self.end = End(self)
+        self.hasPlayed = False
+
         self.play_button = Button(self, "Play")
 
     def run_game(self):
@@ -104,16 +110,21 @@ class zakHarvard:
     def _update_screen(self):
         if not self.gameStatus:
             self.play_button.draw_button()
+        if self.enemy1.lives <= 0 and self.enemy2.lives <= 0:
+            self.bossStatus = True
         self.player.blitme()
-        if self.enemy1.lives > 0:
-            self.obstacle2.blitme()
+        if not self.bossStatus:
             self.enemy1.blitme()
-        if self.enemy2.lives > 0:
             self.obstacle.blitme()
             self.enemy2.blitme()
-        if self.enemy1 == 0 and self.enemy2 == 0:
+            self.obstacle2.blitme()
+        elif self.bossStatus and self.boss.lives > 0:
             self.boss.blitme()
-            self.bossStatus = True
+            if not self.hasPlayed:
+                self.playBossScene()
+        if self.boss.lives <= 0:
+            self.playEnding()
+
         pygame.display.flip()
         for bullet in self.bullets.sprites():
             bullet.draw_bullet()
@@ -149,6 +160,10 @@ class zakHarvard:
                 self.enemy2.lives -= 1
                 print(self.enemy2.lives)
                 self.bullets.remove(bullet)
+            if bullet.rect.x - self.boss.rect.x <= 5 and bullet.rect.y - self.boss.rect.y <= 5 and self.boss.lives > 0 and self.bossStatus:
+                self.boss.lives -= 1
+                print(self.boss.lives)
+                self.bullets.remove(bullet)
 
     def _fire_Ebullet(self):
         """Create a new bullet and add it to the bullets group."""
@@ -162,6 +177,7 @@ class zakHarvard:
                 new_bullet2.bullet_Direction(self.right_Direction)
                 self.bullets.add(new_bullet2)
             if (self.enemy2.lives == 0 and self.enemy1.lives == 0):
+                self.bossStatus = True
                 new_bullet3 = BossBullet(self)
                 new_bullet3.bullet_Direction(self.right_Direction)
                 self.bullets.add(new_bullet3)
@@ -186,6 +202,18 @@ class zakHarvard:
         button_clicked = self.play_button.rect.collidepoint(mouse_pos)
         if (button_clicked):
             self.gameStatus = True
+
+    def playBossScene(self):
+        self.end = End(self)
+        self.settings = Settings()
+        self.screen = pygame.display.set_mode((800, 600))
+        self.settings.screen_width = self.screen.get_rect().width
+        self.settings.screen_height = self.screen.get_rect().height
+        self.hasPlayed = True
+
+    def playEnding(self):
+        self.final = Final(self)
+        pygame.quit()
 
 
 if __name__ == '__main__':

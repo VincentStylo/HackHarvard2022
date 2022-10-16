@@ -18,3 +18,10 @@ class End(Sprite):
         super().__init__()
         video = moviepy.editor.VideoFileClip("movies/BossCutscene.mp4")
         video.preview()
+
+
+class Final(Sprite):
+    def __init__(self, ai_game):
+        super().__init__()
+        video = moviepy.editor.VideoFileClip("movies/Ending.mp4")
+        video.preview()
