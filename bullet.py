@@ -1,6 +1,6 @@
 import pygame
 from pygame.sprite import Sprite
-from player import Player
+from enemy import Enemy1, Enemy2
 
 
 class Bullet(Sprite):
@@ -18,10 +18,7 @@ class Bullet(Sprite):
         # Create a bullet rect at (0, 0) and then set correct position.
         self.rect = pygame.Rect(0, 0, self.settings.bullet_width,
                                 self.settings.bullet_height)
-        if self.direction == False:
-            self.rect.midright = ai_game.player.rect.midright
-        else:
-            self.rect.midleft = ai_game.player.rect.midleft
+        self.rect.midright = ai_game.player.rect.midright
 
         # Store the bullet's position as a decimal value.
         self.x = float(self.rect.x)
@@ -48,6 +45,9 @@ class Bullet(Sprite):
 
     def bullet_Direction(self, newDirection):
         return newDirection
+
+    def collisionBox(self):
+        return self.rect
 
 
 class Enemy1Bullet(Sprite):
@@ -97,6 +97,9 @@ class Enemy1Bullet(Sprite):
     def bullet_Direction(self, newDirection):
         return newDirection
 
+    def collisionBox(self):
+        return self.rect
+
 
 class Enemy2Bullet(Sprite):
     """A class to manage bullets fired from the ship"""
@@ -144,3 +147,6 @@ class Enemy2Bullet(Sprite):
 
     def bullet_Direction(self, newDirection):
         return newDirection
+
+    def collisionBox(self, item):
+        return self.rect

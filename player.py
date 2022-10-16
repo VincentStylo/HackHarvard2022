@@ -1,6 +1,7 @@
 from pickle import TRUE
 import pygame
 from time import sleep
+from bullet import *
 
 from pygame.sprite import Sprite
 from obstacle import *
@@ -30,6 +31,7 @@ class Player(Sprite):
         self.moving_right = False
         self.moving_left = False
         self.jump = False
+        self.lives = 5
 
     def update(self):
         if self.moving_right and self.rect.right < self.screen_rect.right:
@@ -64,4 +66,8 @@ class Player(Sprite):
         self.screen.blit(self.image, self.rect)
 
     def collision(self):
-        return self.rect.colliderect(Obstacle(self).collisionBox()) or self.rect.colliderect(Obstacle2(self).collisionBox())
+        if (self.rect.colliderect(Obstacle(self).collisionBox()) or self.rect.colliderect(Obstacle2(self).collisionBox())):
+            return True
+
+    def collisionBox(self):
+        return self.rect

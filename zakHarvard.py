@@ -12,7 +12,7 @@ from bullet import *
 from settings import Settings
 
 
-class HackHeartvard:
+class zakHarvard:
     def __init__(self):
         pygame.init()
         self.settings = Settings()
@@ -23,7 +23,7 @@ class HackHeartvard:
         image = pygame.image.load("images/menu.png")
         image = pygame.transform.scale(image, (800, 600))
         self.screen.blit(image, (0, 0))
-        pygame.display.set_caption("Hack Heartvard")
+        pygame.display.set_caption("Zak Harvard")
         self.right_Direction = False
         self.count = 0
 
@@ -55,7 +55,6 @@ class HackHeartvard:
             self._update_background()
             self.player.update()
             self._update_bullets()
-            self.player.collision()
             self._update_Ebullets()
 
     def _check_events(self):
@@ -95,8 +94,10 @@ class HackHeartvard:
         self.player.blitme()
         self.obstacle.blitme()
         self.obstacle2.blitme()
-        self.enemy1.blitme()
-        self.enemy2.blitme()
+        if (self.enemy1.lives > 0):
+            self.enemy1.blitme()
+        if (self.enemy2.lives > 0):
+            self.enemy2.blitme()
         pygame.display.flip()
         for bullet in self.bullets.sprites():
             bullet.draw_bullet()
@@ -124,28 +125,44 @@ class HackHeartvard:
         for bullet in self.bullets.copy():
             if bullet.rect.right >= 900 or bullet.rect.left <= 0:
                 self.bullets.remove(bullet)
+            if bullet.rect.x - self.enemy1.rect.x <= 5 and bullet.rect.y - self.enemy1.rect.y <= 5 and self.enemy1.lives > 0:
+                self.enemy1.lives -= 1
+                print(self.enemy1.lives)
+                self.bullets.remove(bullet)
+            if bullet.rect.x - self.enemy2.rect.x <= 5 and bullet.rect.y - self.enemy2.rect.y <= 5 and self.enemy2.lives > 0:
+                self.enemy2.lives -= 1
+                print(self.enemy2.lives)
+                self.bullets.remove(bullet)
 
     def _fire_Ebullet(self):
         """Create a new bullet and add it to the bullets group."""
         if len(self.bullets) < self.settings.bullets_allowed:
-            new_bullet = Enemy1Bullet(self)
-            new_bullet.bullet_Direction(self.right_Direction)
-            self.bullets.add(new_bullet)
-            new_bullet2 = Enemy2Bullet(self)
-            new_bullet2.bullet_Direction(self.right_Direction)
-            self.bullets.add(new_bullet2)
+            if (self.enemy1.lives > 0):
+                new_bullet = Enemy1Bullet(self)
+                new_bullet.bullet_Direction(self.right_Direction)
+                self.bullets.add(new_bullet)
+            if (self.enemy2.lives > 0):
+                new_bullet2 = Enemy2Bullet(self)
+                new_bullet2.bullet_Direction(self.right_Direction)
+                self.bullets.add(new_bullet2)
 
     def _update_Ebullets(self):
         """Update position of bullets and get rid of old bullets."""
         # Update bullet positions.
         self.bullets.update()
+
         # Get rid of bullets that have disappeared.
         for bullet in self.bullets.copy():
             if bullet.rect.right >= 900 or bullet.rect.left <= 0:
                 self.bullets.remove(bullet)
+            if bullet.rect.x - self.player.rect.x <= 5 and bullet.rect.y - self.player.rect.y == 5:
+                self.bullets.remove(bullet)
+                self.player.lives -= 1
+                if (self.player.lives == 0):
+                    sys.exit()
 
 
 if __name__ == '__main__':
     # Creates the game, and runs it
-    ai = HackHeartvard()
+    ai = zakHarvard()
     ai.run_game()

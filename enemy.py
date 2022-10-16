@@ -1,6 +1,5 @@
 import pygame
 from pygame.sprite import Sprite
-from bullet import Bullet
 
 
 class Enemy1(Sprite):
@@ -10,6 +9,7 @@ class Enemy1(Sprite):
         self.screen = ai_game.screen
         self.settings = ai_game.settings
         self.screen_rect = ai_game.screen.get_rect()
+        self.lives = 3
 
         # Load the player image and gets its rect.
         self.image = pygame.image.load("images/enemy1.png")
@@ -23,8 +23,8 @@ class Enemy1(Sprite):
     def blitme(self):
         self.screen.blit(self.image, self.rect)
 
-    def collision(self):
-        return self.rect.colliderect(Bullet(self).collisionBox())
+    def collisionBox(self):
+        return self.rect
 
 
 class Enemy2(Sprite):
@@ -34,6 +34,7 @@ class Enemy2(Sprite):
         self.screen = ai_game.screen
         self.settings = ai_game.settings
         self.screen_rect = ai_game.screen.get_rect()
+        self.lives = 3
 
         # Load the player image and gets its rect.
         self.image = pygame.image.load("images/enemy2.png")
@@ -47,5 +48,5 @@ class Enemy2(Sprite):
     def blitme(self):
         self.screen.blit(self.image, self.rect)
 
-    def collision(self):
-        return self.rect.colliderect(Bullet(self).collisionBox())
+    def collisionBox(self):
+        return self.rect
