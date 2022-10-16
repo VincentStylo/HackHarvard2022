@@ -11,8 +11,6 @@ import pygame
 from bullet import *
 from settings import Settings
 
-right_direction = True;
-
 
 class HackHeartvard:
     def __init__(self):
@@ -26,9 +24,12 @@ class HackHeartvard:
         image = pygame.transform.scale(image, (800, 600))
         self.screen.blit(image, (0, 0))
         pygame.display.set_caption("Hack Heartvard")
+        self.right_Direction = False
+        self.count = 0
 
         self.player = Player(self)
         self.bullets = pygame.sprite.Group()
+        self.enemyBullets = pygame.sprite.Group()
 
         self.obstacle = Obstacle(self)
         self.obstacle2 = Obstacle2(self)
@@ -36,17 +37,26 @@ class HackHeartvard:
         self.enemy1 = Enemy1(self)
         self.enemy2 = Enemy2(self)
 
+        self.bossExists = False
+
     def run_game(self):
+        i = 0
         self.image = pygame.image.load(self.img)
         self.image = pygame.transform.scale(self.image, (800, 600))
         while True:
+            i += 1
             self.screen.blit(self.image, (0, 0))
             self._check_events()
+            if (i % 100 == 0):
+                self._fire_Ebullet()
+                if (i > 100):
+                    i = 0
             self._update_screen()
             self._update_background()
             self.player.update()
             self._update_bullets()
             self.player.collision()
+            self._update_Ebullets()
 
     def _check_events(self):
         for event in pygame.event.get():
@@ -90,6 +100,8 @@ class HackHeartvard:
         pygame.display.flip()
         for bullet in self.bullets.sprites():
             bullet.draw_bullet()
+        for bullet in self.enemyBullets.sprites():
+            bullet.draw_bullet()
 
     def _update_background(self):
         image = pygame.image.load(self.img)
@@ -101,7 +113,7 @@ class HackHeartvard:
         """Create a new bullet and add it to the bullets group."""
         if len(self.bullets) < self.settings.bullets_allowed:
             new_bullet = Bullet(self)
-            new_bullet.bullet_Direction(right_direction)
+            new_bullet.bullet_Direction(self.right_Direction)
             self.bullets.add(new_bullet)
 
     def _update_bullets(self):
@@ -110,7 +122,26 @@ class HackHeartvard:
         self.bullets.update()
         # Get rid of bullets that have disappeared.
         for bullet in self.bullets.copy():
-            if bullet.rect.right >= 900:
+            if bullet.rect.right >= 900 or bullet.rect.left <= 0:
+                self.bullets.remove(bullet)
+
+    def _fire_Ebullet(self):
+        """Create a new bullet and add it to the bullets group."""
+        if len(self.bullets) < self.settings.bullets_allowed:
+            new_bullet = Enemy1Bullet(self)
+            new_bullet.bullet_Direction(self.right_Direction)
+            self.bullets.add(new_bullet)
+            new_bullet2 = Enemy2Bullet(self)
+            new_bullet2.bullet_Direction(self.right_Direction)
+            self.bullets.add(new_bullet2)
+
+    def _update_Ebullets(self):
+        """Update position of bullets and get rid of old bullets."""
+        # Update bullet positions.
+        self.bullets.update()
+        # Get rid of bullets that have disappeared.
+        for bullet in self.bullets.copy():
+            if bullet.rect.right >= 900 or bullet.rect.left <= 0:
                 self.bullets.remove(bullet)
 
 
