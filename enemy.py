@@ -9,7 +9,7 @@ class Enemy1(Sprite):
         self.screen = ai_game.screen
         self.settings = ai_game.settings
         self.screen_rect = ai_game.screen.get_rect()
-        self.lives = 3
+        self.lives = 0
 
         # Load the player image and gets its rect.
         self.image = pygame.image.load("images/enemy1.png")
@@ -18,7 +18,7 @@ class Enemy1(Sprite):
         self.rect = self.image.get_rect()
 
         self.rect.midright = self.screen_rect.midright
-        self.rect.y -= 75
+        self.rect.y -= 175
 
     def blitme(self):
         self.screen.blit(self.image, self.rect)
@@ -34,7 +34,7 @@ class Enemy2(Sprite):
         self.screen = ai_game.screen
         self.settings = ai_game.settings
         self.screen_rect = ai_game.screen.get_rect()
-        self.lives = 3
+        self.lives = 0
 
         # Load the player image and gets its rect.
         self.image = pygame.image.load("images/enemy2.png")
@@ -43,10 +43,30 @@ class Enemy2(Sprite):
         self.rect = self.image.get_rect()
 
         self.rect.bottomright = self.screen_rect.bottomright
-        self.rect.y -= 75
+        self.rect.y -= 175
 
     def blitme(self):
         self.screen.blit(self.image, self.rect)
 
-    def collisionBox(self):
-        return self.rect
+
+class Boss(Sprite):
+    def __init__(self, ai_game):
+        """Initialize the ship and set its starting position."""
+        super().__init__()
+        self.screen = ai_game.screen
+        self.settings = ai_game.settings
+        self.screen_rect = ai_game.screen.get_rect()
+        self.lives = 10
+
+        # Load the player image and gets its rect.
+        self.image = pygame.image.load("images/the-organizer.png")
+        self.image = pygame.transform.scale(self.image, (75, 75))
+        self.image = pygame.transform.flip(self.image, True, False)
+        self.rect = self.image.get_rect()
+
+        self.rect.bottomright = self.screen_rect.bottomright
+        self.rect.y += 75
+        self.rect.x -= 75
+
+    def blitme(self):
+        self.screen.blit(self.image, self.rect)

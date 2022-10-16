@@ -14,6 +14,7 @@ class Obstacle(Sprite):
         self.rect = self.image.get_rect()
 
         self.rect.bottomright = self.screen_rect.bottomright
+        self.rect.y -= 100
 
     def blitme(self):
         self.screen.blit(self.image, self.rect)
@@ -34,6 +35,7 @@ class Obstacle2(Sprite):
         self.rect = self.image.get_rect()
 
         self.rect.midright = self.screen_rect.midright
+        self.rect.y -= 100
 
     def blitme(self):
         self.screen.blit(self.image, self.rect)

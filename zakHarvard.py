@@ -5,6 +5,8 @@ from turtle import left
 from player import Player
 from obstacle import *
 from enemy import *
+from cutscene import *
+from button import *
 
 import pygame
 
@@ -15,11 +17,12 @@ from settings import Settings
 class zakHarvard:
     def __init__(self):
         pygame.init()
+        #self.intro = Intro(self)
         self.settings = Settings()
         self.screen = pygame.display.set_mode((800, 600))
         self.settings.screen_width = self.screen.get_rect().width
         self.settings.screen_height = self.screen.get_rect().height
-        self.img = "images/bg1.png"
+        self.img = "images/bg.png"
         image = pygame.image.load("images/menu.png")
         image = pygame.transform.scale(image, (800, 600))
         self.screen.blit(image, (0, 0))
@@ -36,8 +39,13 @@ class zakHarvard:
 
         self.enemy1 = Enemy1(self)
         self.enemy2 = Enemy2(self)
+        self.boss = Boss(self)
 
-        self.bossExists = False
+        self.gameStatus = False
+        self.bossStatus = False
+        if (self.bossStatus):
+            self.end = End(self)
+        self.play_button = Button(self, "Play")
 
     def run_game(self):
         i = 0
@@ -55,7 +63,7 @@ class zakHarvard:
             self._update_background()
             self.player.update()
             self._update_bullets()
-            self._update_Ebullets()
+            self.player.collision()
 
     def _check_events(self):
         for event in pygame.event.get():
@@ -65,6 +73,9 @@ class zakHarvard:
                 self._check_keydown_events(event)
             if event.type == pygame.KEYUP:
                 self._check_keyup_events(event)
+            elif event.type == pygame.MOUSEBUTTONDOWN:
+                mouse_pos = pygame.mouse.get_pos()
+                self._check_play_button(mouse_pos)
 
     def _check_keydown_events(self, event):
         """Respond to keypresses."""
@@ -91,13 +102,18 @@ class zakHarvard:
             self.player.jump = False
 
     def _update_screen(self):
+        if not self.gameStatus:
+            self.play_button.draw_button()
         self.player.blitme()
-        self.obstacle.blitme()
-        self.obstacle2.blitme()
-        if (self.enemy1.lives > 0):
+        if self.enemy1.lives > 0:
+            self.obstacle2.blitme()
             self.enemy1.blitme()
-        if (self.enemy2.lives > 0):
+        if self.enemy2.lives > 0:
+            self.obstacle.blitme()
             self.enemy2.blitme()
+        if self.enemy1 == 0 and self.enemy2 == 0:
+            self.boss.blitme()
+            self.bossStatus = True
         pygame.display.flip()
         for bullet in self.bullets.sprites():
             bullet.draw_bullet()
@@ -145,6 +161,10 @@ class zakHarvard:
                 new_bullet2 = Enemy2Bullet(self)
                 new_bullet2.bullet_Direction(self.right_Direction)
                 self.bullets.add(new_bullet2)
+            if (self.enemy2.lives == 0 and self.enemy1.lives == 0):
+                new_bullet3 = BossBullet(self)
+                new_bullet3.bullet_Direction(self.right_Direction)
+                self.bullets.add(new_bullet3)
 
     def _update_Ebullets(self):
         """Update position of bullets and get rid of old bullets."""
@@ -160,6 +180,12 @@ class zakHarvard:
                 self.player.lives -= 1
                 if (self.player.lives == 0):
                     sys.exit()
+
+    def _check_play_button(self, mouse_pos):
+        """Start a new game when the player clicks Play."""
+        button_clicked = self.play_button.rect.collidepoint(mouse_pos)
+        if (button_clicked):
+            self.gameStatus = True
 
 
 if __name__ == '__main__':
